@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   VOICE                                                                 04/15/2014 19:20:49 PAGE 1   
+C51 COMPILER V9.51   VOICE                                                                 04/15/2014 20:57:22 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE VOICE
@@ -62,7 +62,7 @@ line level    source
   53                SC_DATA=1; // 数据脉冲高
   54                delay_us(350);
   55                SC_DATA=0; // 数据脉冲低
-C51 COMPILER V9.51   VOICE                                                                 04/15/2014 19:20:49 PAGE 2   
+C51 COMPILER V9.51   VOICE                                                                 04/15/2014 20:57:22 PAGE 2   
 
   56                delay_us(350);
   57             }
@@ -126,7 +126,7 @@ line level    source
  115             key_rotate_off_speech()
  116             speech for key rotated off
  117          void key_rotate_off_speech(void)
-C51 COMPILER V9.51   VOICE                                                                 04/15/2014 19:20:49 PAGE 3   
+C51 COMPILER V9.51   VOICE                                                                 04/15/2014 20:57:22 PAGE 3   
 
  118             {
  119             voice_EN = 1;
@@ -190,7 +190,7 @@ line level    source
  177             判断为被盗的时候，发出报警语音第二段
  178          ----------------------------------------------------*/
  179          void stolen_alarm_speech2(void)
-C51 COMPILER V9.51   VOICE                                                                 04/15/2014 19:20:49 PAGE 4   
+C51 COMPILER V9.51   VOICE                                                                 04/15/2014 20:57:22 PAGE 4   
 
  180             {
  181   1         voice_EN = 1;
@@ -254,7 +254,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    PDATA SIZE       =   ----    ----
    DATA SIZE        =      1       2
    IDATA SIZE       =   ----    ----
-C51 COMPILER V9.51   VOICE                                                                 04/15/2014 19:20:49 PAGE 5   
+C51 COMPILER V9.51   VOICE                                                                 04/15/2014 20:57:22 PAGE 5   
 
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

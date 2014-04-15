@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   TIMER                                                                 04/15/2014 19:20:49 PAGE 1   
+C51 COMPILER V9.51   TIMER                                                                 04/15/2014 20:57:23 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   51          tByte nearby_away_interval = 0;     //附机离开和靠近时，语音提示和开关锁的时间间隔
   52          bit magnet_ACW_flag=0;
   53          
-C51 COMPILER V9.51   TIMER                                                                 04/15/2014 19:20:49 PAGE 2   
+C51 COMPILER V9.51   TIMER                                                                 04/15/2014 20:57:23 PAGE 2   
 
   54          // ------ Private variable definitions -----------------------------
   55          tByte timer0_8H, timer0_8L, timer1_8H, timer1_8L;     // register value of timer0 and timer1, caculated from 
@@ -126,7 +126,7 @@ line level    source
  108   2            // if fell and raised flag is 1, send alarm signal every 2s.
  109   2            if((fell_flag==1)&&(fell_alarm_count<5))
  110   2               {
-C51 COMPILER V9.51   TIMER                                                                 04/15/2014 19:20:49 PAGE 3   
+C51 COMPILER V9.51   TIMER                                                                 04/15/2014 20:57:23 PAGE 3   
 
  111   3               ComMode_5_Data();
  112   3               fell_alarm_count++;
@@ -190,7 +190,7 @@ line level    source
  170   2            stolen_alarm_flag = 1;
  171   2            if(key_rotate == 1)
  172   2               {
-C51 COMPILER V9.51   TIMER                                                                 04/15/2014 19:20:49 PAGE 4   
+C51 COMPILER V9.51   TIMER                                                                 04/15/2014 20:57:23 PAGE 4   
 
  173   3               ComMode_3_Data();
  174   3               stolen_alarm_speech1();
@@ -254,7 +254,7 @@ line level    source
  232   7                           host_touch_speech();
  233   7                           }
  234   6                        }
-C51 COMPILER V9.51   TIMER                                                                 04/15/2014 19:20:49 PAGE 5   
+C51 COMPILER V9.51   TIMER                                                                 04/15/2014 20:57:23 PAGE 5   
 
  235   5                     else
  236   5                        {
@@ -318,7 +318,7 @@ line level    source
  294   5                     if(++sensor_3rdstage_time >= 4000)
  295   5                        {
  296   6                        sensor_trigger_count = 0;
-C51 COMPILER V9.51   TIMER                                                                 04/15/2014 19:20:49 PAGE 6   
+C51 COMPILER V9.51   TIMER                                                                 04/15/2014 20:57:23 PAGE 6   
 
  297   6                        sensor_1ststage_count = 0;
  298   6                        sensor_2ndstage_count = 0;
@@ -382,7 +382,7 @@ line level    source
  356   3               raised_flag=0;
  357   3               raised_alarm_count=0;
  358   3               raise_wire_time=0;
-C51 COMPILER V9.51   TIMER                                                                 04/15/2014 19:20:49 PAGE 7   
+C51 COMPILER V9.51   TIMER                                                                 04/15/2014 20:57:23 PAGE 7   
 
  359   3               raised_fell_flag = 0;
  360   3               }
@@ -446,7 +446,7 @@ line level    source
  418   1            {
  419   2            horizontal_vibration_count = 5001;
  420   2            horizontal_vibration = 0;
-C51 COMPILER V9.51   TIMER                                                                 04/15/2014 19:20:49 PAGE 8   
+C51 COMPILER V9.51   TIMER                                                                 04/15/2014 20:57:23 PAGE 8   
 
  421   2            }
  422   1         }
@@ -510,7 +510,7 @@ line level    source
  480   4                  
  481   4                  // reset the wire broken count
  482   4                  wire_broken_count = 0;
-C51 COMPILER V9.51   TIMER                                                                 04/15/2014 19:20:49 PAGE 9   
+C51 COMPILER V9.51   TIMER                                                                 04/15/2014 20:57:23 PAGE 9   
 
  483   4                  
  484   4                  // reset the battery stolen flag
@@ -574,7 +574,7 @@ line level    source
  542          ----------------------------------------------------*/
 
 
-C51 COMPILER V9.51   TIMER                                                                 04/15/2014 19:20:49 PAGE 10  
+C51 COMPILER V9.51   TIMER                                                                 04/15/2014 20:57:23 PAGE 10  
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =   1054    ----

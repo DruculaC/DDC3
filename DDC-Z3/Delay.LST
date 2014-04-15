@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   DELAY                                                                 04/15/2014 19:20:49 PAGE 1   
+C51 COMPILER V9.51   DELAY                                                                 04/15/2014 20:57:22 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE DELAY
@@ -62,7 +62,7 @@ line level    source
   53             
   54          /*--------------------------------------------------
   55             delay_ms()
-C51 COMPILER V9.51   DELAY                                                                 04/15/2014 19:20:49 PAGE 2   
+C51 COMPILER V9.51   DELAY                                                                 04/15/2014 20:57:22 PAGE 2   
 
   56             
   57             延迟约为1ms的子程序
@@ -104,13 +104,13 @@ line level    source
              -       
   93   1         for(i = 0; i < 50; i++)
   94   1            {
-  95   2            for(j = 0; j< 8000; j++);
+  95   2            for(j = 0; j< 5000; j++);
   96   2            }
   97   1         for(i = 0; i < 50; i++)
   98   1            {
   99   2            if(magnet_overcurrent == 1)
  100   2               {
- 101   3               for(j = 0; j< 18000; j++);
+ 101   3               for(j = 0; j< 15000; j++);
  102   3               }
  103   2            }
  104   1      
@@ -126,7 +126,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-C51 COMPILER V9.51   DELAY                                                                 04/15/2014 19:20:49 PAGE 3   
+C51 COMPILER V9.51   DELAY                                                                 04/15/2014 20:57:22 PAGE 3   
 
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
