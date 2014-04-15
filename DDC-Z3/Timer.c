@@ -104,6 +104,18 @@ void timer0() interrupt interrupt_timer_0_overflow
 		
 		// detect the battery voltage
 		ADC_check_result = GetADCResult(6);	
+		
+		// if fell and raised flag is 1, send alarm signal every 2s.
+		if((fell_flag==1)&&(fell_alarm_count<5))
+			{
+			ComMode_5_Data();
+			fell_alarm_count++;
+			}
+		if((raised_flag==1)&&(raised_alarm_count<5))		
+			{
+			ComMode_4_Data();
+			raised_alarm_count++;
+			}
 		}
 						
 	// detect whether key is rotated on,  
@@ -325,11 +337,12 @@ void timer0() interrupt interrupt_timer_0_overflow
 		if(raised_sensor_detect == 0)	
 			{
 			// LV > 0.5s means a effective input
-			if(++raise_wire_time==10)
+			if(++raise_wire_time >= 3)
 				{
 				// flag raised, and reset fell
 				raised_flag=1;
 				fell_flag=0;
+				raise_wire_time = 11;
 				// judge whether there once been a raised or fell.
 				if(raised_fell_once_flag == 0)
 					{
@@ -349,11 +362,12 @@ void timer0() interrupt interrupt_timer_0_overflow
 		if(fell_sensor_detect==0)
 			{
 			// LV > 0.5s means a effective input
-			if(++fell_wire_time==10)	
+			if(++fell_wire_time >= 3)	
 				{
 				// flag fell, and reset raised
 				fell_flag=1;			
 				raised_flag=0;
+				fell_wire_time = 11;
 				// judge whether there once been a raised or fell
 				if(raised_fell_once_flag == 0)
 					{

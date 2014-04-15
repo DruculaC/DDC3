@@ -157,6 +157,7 @@ void host_2ndtouch_speech(void)
 	SC_Speech(27);  
 	Delay(70);
 	voice_EN = 0;
+	Delay(30);
 	}
 	
 /*----------------------------------------------------

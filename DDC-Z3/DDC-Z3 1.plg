@@ -29,7 +29,7 @@ linking...
     SEGMENT: ?PR?COMMODE_4_DATA?COMMUNICATION
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?COMMODE_5_DATA?COMMUNICATION
-Program Size: data=103.1 xdata=0 code=3576
+Program Size: data=103.1 xdata=0 code=3566
 creating hex file from "DDC-Z3"...
 "DDC-Z3" - 0 Error(s), 5 Warning(s).
 Rebuild target 'Target 1'
@@ -54,7 +54,7 @@ linking...
     SEGMENT: ?PR?COMMODE_4_DATA?COMMUNICATION
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?COMMODE_5_DATA?COMMUNICATION
-Program Size: data=103.1 xdata=0 code=3576
+Program Size: data=103.1 xdata=0 code=3566
 creating hex file from "DDC-Z3"...
 "DDC-Z3" - 0 Error(s), 5 Warning(s).
 Rebuild target 'Target 1'
@@ -75,6 +75,10 @@ linking...
     SEGMENT: ?PR?MYPWM?PWM
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?COMMODE_1_DATA?COMMUNICATION
-Program Size: data=96.1 xdata=0 code=3606
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?COMMODE_4_DATA?COMMUNICATION
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?COMMODE_5_DATA?COMMUNICATION
+Program Size: data=103.1 xdata=0 code=3566
 creating hex file from "DDC-Z3"...
-"DDC-Z3" - 0 Error(s), 3 Warning(s).
+"DDC-Z3" - 0 Error(s), 5 Warning(s).
