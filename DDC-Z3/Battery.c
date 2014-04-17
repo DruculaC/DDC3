@@ -21,54 +21,54 @@ extern tByte key_rotated_on_flag;
 
 void verifybattery(tWord Check2)
 	{	
-	// battery is sufficient, battery > 54.6V, 3.18V/4.04V
+	// battery is sufficient, battery > 51.2V, 3.53V/4.95V
 //	if((Check2 >= 0x326))
-	if((Check2 >= 0x316))
+	if((Check2 >= 0x2da))
 		{
 		voice_EN = 1;
 		SC_Speech(28);  	
 		Delay(50);
 		voice_EN = 0;
 		}
-   // 20km, 52V < battery < 54.6, 3.08V/4.04V
+   // 20km, 50.1V < battery < 51.2, 3.47V/4.95V
 //	else if((Check2 < 0x322)&&(Check2 >= 0x30c))		
-	else if((Check2 < 0x312)&&(Check2 >= 0x2fc))		
+	else if((Check2 < 0x2da)&&(Check2 >= 0x2cd))		
 		{
 		voice_EN = 1;
 		SC_Speech(10);  
 		Delay(80);
 		voice_EN = 0;
 		}
-	// 15km, 50V < battery < 52V, 2.98V/4.04V 
+	// 15km, 49V < battery < 50.1V, 3.42V/4.95V 
 //	else if((Check2 < 0x309)&&(Check2 >= 0x2f3))		
-	else if((Check2 < 0x2f9)&&(Check2 >= 0x2e3))		
+	else if((Check2 < 0x2cd)&&(Check2 >= 0x2c3))		
 		{
 		voice_EN = 1;
 		SC_Speech(9);  	
 		Delay(80);
 		voice_EN = 0;
 		}
-	// 10km, 48V < battery <50V, 2.88V/4.04V
+	// 10km, 48V < battery <49V, 3.36V/4.95V
 //	else if((Check2 < 0x3f0)&&(Check2 >= 0x2da))		
-	else if((Check2 < 0x2e0)&&(Check2 >= 0x2ca))		
+	else if((Check2 < 0x2c3)&&(Check2 >= 0x2b7))		
 		{
 		voice_EN = 1;
 		SC_Speech(8);  	
 		Delay(80);
 		voice_EN = 0;
 		}
-	// 5km, 46V < battery < 48V, 2.78V/4.04V
+	// 5km, 47V < battery < 48V, 3.31V/4.95V
 //	else if((Check2 < 0x2d7)&&(Check2 >= 0x2c0))		
-	else if((Check2 < 0x2c7)&&(Check2 >= 0x2b0))		
+	else if((Check2 < 0x2b7)&&(Check2 >= 0x2ac))		
 		{
 		voice_EN =1;
 		SC_Speech(7);  	
 		Delay(80);
 		voice_EN = 0;
 		}
-	// battery is low, battery < 46V
+	// battery is low, battery < 47V
 //	else if(Check2 < 0x2bd)
-	else if(Check2 < 0x2ad)
+	else if(Check2 < 0x2ac)
 		{
 		motorBAT_low_speech();
 		}

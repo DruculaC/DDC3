@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   OPERATION                                                             04/15/2014 20:57:23 PAGE 1   
+C51 COMPILER V9.51   OPERATION                                                             04/17/2014 15:30:01 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE OPERATION
@@ -54,87 +54,93 @@ line level    source
   42          extern tByte key_rotated_on_flag;         //电动车开启关闭标志位，1表示电动车开启了，0表示电动车关闭了
   43          extern tWord ADC_check_result;      //作为AD检测值
   44          extern tByte wire_broken_count;     // 作为断线后的时间检测
-  45          
-  46          /*-----------------------------------------
-  47             slave_away_operation().c
-  48             
-  49             operation for slave is away
-  50          ------------------------------------------*/
-  51          void slave_away_operation(void)
-  52             {
-C51 COMPILER V9.51   OPERATION                                                             04/15/2014 20:57:23 PAGE 2   
+  45          extern bit battery_stolen_EN;       // 作为电池被盗的使能端
+  46          extern tByte battery_stolen_count;  // 作为电池被盗的报警次数
+  47          
+  48          /*-----------------------------------------
+  49             slave_away_operation().c
+  50             
+  51             operation for slave is away
+  52          ------------------------------------------*/
+C51 COMPILER V9.51   OPERATION                                                             04/17/2014 15:30:01 PAGE 2   
 
-  53   1         // turn off the magnet 
-  54   1         magnet_ACW();
-  55   1         
-  56   1         // speech for slave away
-  57   1         slave_away_speech();
-  58   1         
-  59   1         
-  60   1         // enable position sensor(vertical and horizontal) and vibration sensor
-  61   1         position_sensor_EN=1;   
-  62   1         sensor_EN = 1;
-  63   1         // reset relatively sensor count
-  64   1         sensor_trigger_count=0;
-  65   1         sensor_1ststage_count=0;
-  66   1         
-  67   1         // delay time, avoid sensor trigger on.
-  68   1         Delay(20);
-  69   1         }
-  70          
-  71          /*----------------------------------------------------------------------
-  72                slave_nearby_operation()
-  73                operation for slave is nearby
-  74          ----------------------------------------------------------------------*/
-  75          void slave_nearby_operation(void)
-  76             {
-  77   1         // enable position sensor(vertical and horizontal) and vibration sensor
-  78   1         position_sensor_EN = 0; 
-  79   1         sensor_EN = 0;
-  80   1      
-  81   1         // turn on the magnet
-  82   1         magnet_CW();
-  83   1      
-  84   1         // speech for slave nearby
-  85   1         slave_nearby_speech();
-  86   1         // handle with battery status 
-  87   1         verifybattery(ADC_check_result);             
-  88   1         // rotate on speech
-  89   1         key_rotate_on_speech();
-  90   1         nearby_away_interval = 0;
-  91   1         
-  92   1         // reset all the flag in sensor
-  93   1         fell_flag=0;  
-  94   1         raised_flag=0;
-  95   1         sensor_trigger_count = 0;
-  96   1         sensor_1ststage_count = 0;
-  97   1         sensor_2ndstage_count = 0;
-  98   1         sensor_2ndstage_time = 0;
-  99   1         sensor_3rdstage_time = 0;
- 100   1         sensor_3rdstage_interval = 0;
- 101   1         sensor_3rdstage_count = 0;
- 102   1         sensor_3rdstage_effcount = 0;
- 103   1         stolen_alarm_flag = 0;
- 104   1         host_stolen_alarm1_EN = 0;
- 105   1         host_stolen_alarm1_count = 0;
- 106   1         host_stolen_alarm2_EN = 0;
- 107   1         host_stolen_alarm2_count = 0;
- 108   1         
- 109   1         raised_fell_flag = 0;
+  53          void slave_away_operation(void)
+  54             {
+  55   1         // turn off the magnet 
+  56   1         magnet_ACW();
+  57   1         
+  58   1         // speech for slave away
+  59   1         slave_away_speech();
+  60   1         
+  61   1         
+  62   1         // enable position sensor(vertical and horizontal) and vibration sensor
+  63   1         position_sensor_EN=1;   
+  64   1         sensor_EN = 1;
+  65   1         // reset relatively sensor count
+  66   1         sensor_trigger_count=0;
+  67   1         sensor_1ststage_count=0;
+  68   1         
+  69   1         // delay time, avoid sensor trigger on.
+  70   1         Delay(20);
+  71   1         }
+  72          
+  73          /*----------------------------------------------------------------------
+  74                slave_nearby_operation()
+  75                operation for slave is nearby
+  76          ----------------------------------------------------------------------*/
+  77          void slave_nearby_operation(void)
+  78             {
+  79   1         // enable position sensor(vertical and horizontal) and vibration sensor
+  80   1         position_sensor_EN = 0; 
+  81   1         sensor_EN = 0;
+  82   1      
+  83   1         // turn on the magnet
+  84   1         magnet_CW();
+  85   1      
+  86   1         // speech for slave nearby
+  87   1         slave_nearby_speech();
+  88   1         // handle with battery status 
+  89   1         verifybattery(ADC_check_result);             
+  90   1         // rotate on speech
+  91   1         key_rotate_on_speech();
+  92   1         nearby_away_interval = 0;
+  93   1         
+  94   1         // reset all the flag in sensor
+  95   1         fell_flag=0;  
+  96   1         raised_flag=0;
+  97   1         sensor_trigger_count = 0;
+  98   1         sensor_1ststage_count = 0;
+  99   1         sensor_2ndstage_count = 0;
+ 100   1         sensor_2ndstage_time = 0;
+ 101   1         sensor_3rdstage_time = 0;
+ 102   1         sensor_3rdstage_interval = 0;
+ 103   1         sensor_3rdstage_count = 0;
+ 104   1         sensor_3rdstage_effcount = 0;
+ 105   1         stolen_alarm_flag = 0;
+ 106   1         host_stolen_alarm1_EN = 0;
+ 107   1         host_stolen_alarm1_count = 0;
+ 108   1         host_stolen_alarm2_EN = 0;
+ 109   1         host_stolen_alarm2_count = 0;
  110   1         
- 111   1         // reset the wire broken count
- 112   1         wire_broken_count = 0;
- 113   1         }
- 114             
-C51 COMPILER V9.51   OPERATION                                                             04/15/2014 20:57:23 PAGE 3   
+ 111   1         raised_fell_flag = 0;
+ 112   1         
+ 113   1         // reset the wire broken count
+ 114   1         wire_broken_count = 0;
+C51 COMPILER V9.51   OPERATION                                                             04/17/2014 15:30:01 PAGE 3   
 
- 115          /*---------------------------------------------------
- 116             end of file
- 117          ----------------------------------------------------*/
+ 115   1         
+ 116   1         // reset battery stolen
+ 117   1         battery_stolen_EN = 0;
+ 118   1         battery_stolen_count = 0;
+ 119   1         }
+ 120             
+ 121          /*---------------------------------------------------
+ 122             end of file
+ 123          ----------------------------------------------------*/
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     85    ----
+   CODE SIZE        =     89    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

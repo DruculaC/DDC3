@@ -42,6 +42,8 @@ extern tByte slave_nearby_operation_count;	// 作为slave靠近后操作的次数
 extern tByte key_rotated_on_flag;			//电动车开启关闭标志位，1表示电动车开启了，0表示电动车关闭了
 extern tWord ADC_check_result;		//作为AD检测值
 extern tByte wire_broken_count;		// 作为断线后的时间检测
+extern bit battery_stolen_EN;			// 作为电池被盗的使能端
+extern tByte battery_stolen_count;	// 作为电池被盗的报警次数
 
 /*-----------------------------------------
 	slave_away_operation().c
@@ -110,6 +112,10 @@ void slave_nearby_operation(void)
 	
 	// reset the wire broken count
 	wire_broken_count = 0;
+	
+	// reset battery stolen
+	battery_stolen_EN = 0;
+	battery_stolen_count = 0;
 	}
 	
 /*---------------------------------------------------

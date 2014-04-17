@@ -92,13 +92,13 @@ void magnet_delay(void)
 	tWord j;                                                                                                        
 	for(i = 0; i < 50; i++)
 		{
-		for(j = 0; j< 5000; j++);
+		for(j = 0; j< 2000; j++);
 		}
 	for(i = 0; i < 50; i++)
 		{
 		if(magnet_overcurrent == 1)
 			{
-			for(j = 0; j< 15000; j++);
+			for(j = 0; j< 10000; j++);
 			}
 		}
 

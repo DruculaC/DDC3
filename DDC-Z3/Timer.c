@@ -97,7 +97,7 @@ void timer0() interrupt interrupt_timer_0_overflow
 	TL0 = timer0_8L;
 	
 	// timer0 is 1ms ticket, count the time flow of timer0, then operate every 2s.
-	if(++timer0_count >= 2000)
+	if(++timer0_count >= 3000)
 		{
 		// reset timer0 ticket counter every 2s
 		timer0_count=0;
@@ -115,6 +115,16 @@ void timer0() interrupt interrupt_timer_0_overflow
 			{
 			ComMode_4_Data();
 			raised_alarm_count++;
+			}
+			
+		if((battery_stolen_EN == 1)&&(battery_stolen_count < 4))
+			{
+			if(key_rotate == 1)
+				{
+				ComMode_2_Data();
+				battery_stolen_speech();
+				battery_stolen_count++;
+				}
 			}
 		}
 						
@@ -195,17 +205,10 @@ void timer0() interrupt interrupt_timer_0_overflow
 			stolen_alarm_flag = 0;
 			}
 		}
-	
-	if((battery_stolen_EN == 1)&&(battery_stolen_count < 6))
-		{
-		ComMode_2_Data();
-		battery_stolen_speech();
-		battery_stolen_count++;
-		}
-			
 
 	// judge host is fell or raised every 1ms?
-	if(raised_fell_flag == 0)
+//	if(raised_fell_flag == 0)
+	if((raised_sensor_detect == 1)&&(fell_sensor_detect == 1))
 		{
 		// judge vibration sensor is enable?
 		if(sensor_EN == 1)	
@@ -402,22 +405,6 @@ void timer0() interrupt interrupt_timer_0_overflow
 			sensor_3rdstage_count = 0;
 			sensor_3rdstage_effcount = 0;					
 			}
-		}
-	
-	// detect the horizontal sensor
-	if(((horizontal_sensor == 0)||(sensor_detect == 0))&&(horizontal_vibration_count > 5000))
-		{
-		Delay(3);
-		if((horizontal_sensor == 0)||(sensor_detect == 0))
-			{
-			horizontal_vibration = 1;
-			horizontal_vibration_count = 0;
-			}
-		}
-	if(++horizontal_vibration_count >= 5000)
-		{
-		horizontal_vibration_count = 5001;
-		horizontal_vibration = 0;
 		}
  	}
 
