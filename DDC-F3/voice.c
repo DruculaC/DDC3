@@ -132,6 +132,18 @@ void battery_stolen_speech(void)
 	Delay(50);
 	Voice_EN = 0;
 	}
+	
+/*---------------------------------------------------------------
+	wire_broken_speech(void)
+	接到锁线被剪断的信号后，语音提示
+----------------------------------------------------------------*/
+void wire_broken_speech(void)
+	{
+	Voice_EN = 1;
+	SC_Speech(15);  
+	Delay(50);
+	Voice_EN = 0;	
+	}
 
 /*---------------------------------------------------
 	end of file

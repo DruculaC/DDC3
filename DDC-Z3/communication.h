@@ -18,6 +18,7 @@
 #define ComMode_3 0xc3 	// host stolen alarm signal 
 #define ComMode_4 0xc4 	// raised alarm signal
 #define ComMode_5 0xc5	// fell alarm signal
+#define ComMode_6 0xc6	// fell alarm signal
 
 //---------public function prototype
 
@@ -29,6 +30,7 @@ void ComMode_2_Data(void);
 void ComMode_3_Data(void);	
 void ComMode_4_Data(void);
 void ComMode_5_Data(void);
+void ComMode_6_Data(void);
 void receive_byte(void);
 void receive_word(void);
 

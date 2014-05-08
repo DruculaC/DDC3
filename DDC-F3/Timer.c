@@ -46,6 +46,7 @@ bit receive_wire_flag = 1;		//接收通信线的标志位，1表明高电平，0表明低电平，每次
 tByte receive_HV_count = 0;		//定时器T1在没有信号到来的时候，对高电平计数，一旦超过某个值，则将one_receive_byte_count清0
 tByte receive_LV_count = 0;		//每次timer1溢出时判断接收线如果为LV，则计数加1，以此来表明低电平的时间
 bit battery_stolen_EN = 0;       // 作为附机接到电池被盗信号后，报警的使能
+bit wire_broken_EN = 0;				// 锁线被剪断的报警使能
 
 /*------------------------------------------------------------------
 	timerT0()
@@ -134,6 +135,12 @@ void timer0() interrupt interrupt_timer_0_overflow
 		battery_stolen_speech();
 		battery_stolen_EN = 0;
 		}
+	
+	if(wire_broken_EN == 1)
+		{
+		wire_broken_speech();
+		wire_broken_EN = 0;
+		}
 	}
 
 /*------------------------------------------------------------------
@@ -204,13 +211,13 @@ void timerT1() interrupt interrupt_timer_1_overflow
 		one_receive_byte_count=0;
 		received_data_buffer[data_count]=one_receive_byte;
 		if(data_count==0&&received_data_buffer[0]==CmdHead)
-		{
+			{
 			data_count=1;
-		}
+			}
 		else if(data_count==1&&received_data_buffer[1]==MyAddress)
-		{
+			{
 			data_count=2;
-		}
+			}
 		else if(data_count==2)
 		{
 			receive_data_finished_flag=1;
@@ -223,10 +230,10 @@ void timerT1() interrupt interrupt_timer_1_overflow
 	}
 
 	if(receive_data_finished_flag==1)	//说明接收到了数据，开始处理
-	{
+		{
 		receive_data_finished_flag=0;	//清接收标志
 		switch(received_data_buffer[2])//解析指令
-		{
+			{
 			case ComMode_1://接收到的是主机发送过来的编码1的信号，说明主机在3M内，是正常的
 				{	
 				Moto_Vibration();
@@ -246,42 +253,43 @@ void timerT1() interrupt interrupt_timer_1_overflow
 				stolen_alarm_flag = 1;
 				Moto_Vibration();         
 
-				raised_alarm_count=0;//清报警计数器
-				raised_alarm_flag=0;//清报警标志
-				fell_alarm_count=0;//清报警计数器
-				fell_alarm_flag=0;//清报警标志
+				raised_alarm_count=0;
+				raised_alarm_flag=0;
+				fell_alarm_count=0;
+				fell_alarm_flag=0;
 				}
 			break;
 		
-			case ComMode_4://留作抬起信号使用
-			{
-				raised_alarm_flag=1;//抬起报警
+			case ComMode_4:
+				{
+				raised_alarm_flag=1;
 
 				stolen_alarm_count=0;//清报警计数器
 				stolen_alarm_flag=0;//清报警标志
 				fell_alarm_count=0;//清报警计数器
 				fell_alarm_flag=0;//清报警标志
-			}
+				}
 			break;
 
 			case ComMode_5://留作倒地信号使用
-			{
+				{
 				fell_alarm_flag=1;	//倒地报警
 
 				stolen_alarm_count=0;//清报警计数器
 				stolen_alarm_flag=0;//清报警标志
 				raised_alarm_count=0;//清报警计数器
 				raised_alarm_flag=0;//清报警标志
-			}
+				}
 			break;
 
 			case ComMode_6:
 				{
-				Host_battery_high_flag = 1;
+				wire_broken_EN = 1;
+				Moto_Vibration();
 				}
 			break;
+			}
 		}
-	}
 }
 
 /*--------------------------------------------------

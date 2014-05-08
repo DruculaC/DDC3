@@ -84,6 +84,7 @@ bit horizontal_vibration = 0;		// 表示垂直传感器在振动，此时就算关钥匙，也不能执
 tWord horizontal_vibration_count = 0;	//垂直传感器触发后，对时间进行计数。
 bit vibration_flag = 0;
 tWord vibration_count = 0;
+bit wire_broken_flag = 0;			// 剪断锁线的标志位
 
 /*------------------------------------------------------------------
 	timerT0()
@@ -170,8 +171,12 @@ void timer0() interrupt interrupt_timer_0_overflow
 		}		
 	if((sensor_detect == 0)||(horizontal_sensor == 0))
 		{
-		vibration_flag = 1;
-		vibration_count = 0;
+		Delay(2);
+		if((sensor_detect == 0)||(horizontal_sensor == 0))
+			{
+			vibration_flag = 1;
+			vibration_count = 0;			
+			}
 		}		
 
 	// whether host has been touched 3 times, if yes, then alarm 2 speech alternantively.
@@ -180,11 +185,19 @@ void timer0() interrupt interrupt_timer_0_overflow
 		stolen_alarm_flag = 1;
 		if(key_rotate == 1)
 			{
-			ComMode_3_Data();
+			if(wire_broken_flag == 0)
+				{
+				ComMode_3_Data();                                                                  
+				}
+			else
+				{                                                                     
+				ComMode_6_Data();
+				}
+				
 			stolen_alarm_speech1();
 			}
 		if(++host_stolen_alarm1_count >= 4)
-			{
+			{                                                                                       
 			host_stolen_alarm1_count = 0;
 			host_stolen_alarm1_EN = 0;
 			stolen_alarm_flag = 0;
@@ -195,7 +208,15 @@ void timer0() interrupt interrupt_timer_0_overflow
 		stolen_alarm_flag = 1;
 		if(key_rotate == 1)
 			{
-			ComMode_3_Data();
+			if(wire_broken_flag == 0)
+				{
+				ComMode_3_Data();
+				}
+			else
+				{
+				ComMode_6_Data();
+				}
+
 			stolen_alarm_speech2();
 			}
 		if(++host_stolen_alarm2_count >= 4)
@@ -221,8 +242,8 @@ void timer0() interrupt interrupt_timer_0_overflow
 					{
 					
 					// judge host been touched and also not in vibration alarm
-//					if((sensor_detect == 0)&&(stolen_alarm_flag == 0)&&(transmiter_EN == 1))		
-					if(((sensor_detect == 0)||(horizontal_sensor == 0))&&(stolen_alarm_flag == 0))		
+//					if(((sensor_detect == 0)||(horizontal_sensor == 0))&&(stolen_alarm_flag == 0))		
+					if((sensor_detect == 0)&&(stolen_alarm_flag == 0))		
 						{
 						// judge LV is more than 2ms, if yes, it means a effective touch
 						if(++sensor_1ststage_count >= 2)			
@@ -246,7 +267,8 @@ void timer0() interrupt interrupt_timer_0_overflow
 				// waiting for next touch, 
 				case 1:
 					{
-					if((sensor_detect == 0)||(horizontal_sensor == 0))
+//					if((sensor_detect == 0)||(horizontal_sensor == 0))
+					if(sensor_detect == 0)
 						{
 						// LV for 2s, means a effective touch
 						if(++sensor_2ndstage_count >= 2)
@@ -277,7 +299,8 @@ void timer0() interrupt interrupt_timer_0_overflow
 				// waiting for 3rd touch
 				case 2:
 					{
-					if((sensor_detect == 0)||(horizontal_sensor == 0))
+//					if((sensor_detect == 0)||(horizontal_sensor == 0))
+					if(sensor_detect == 0)				
 						{
 						// 2s LV is a effective touch
 						if(++sensor_3rdstage_count >= 2)
@@ -317,6 +340,7 @@ void timer0() interrupt interrupt_timer_0_overflow
 					host_stolen_alarm1_EN = 1;
 					host_stolen_alarm2_EN = 1;	
 					wire_broken_count = 51;
+					wire_broken_flag = 1;
                }
 				}
 			

@@ -1,15 +1,15 @@
-C51 COMPILER V9.51   OPERATION                                                             04/17/2014 15:30:01 PAGE 1   
+C51 COMPILER V9.51   OPERATION                                                             05/08/2014 09:50:00 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE OPERATION
 OBJECT MODULE PLACED IN operation.OBJ
-COMPILER INVOKED BY: D:\Program Files (x86)\keil\C51\BIN\C51.EXE operation.c BROWSE DEBUG OBJECTEXTEND TABS(3)
+COMPILER INVOKED BY: D:\Program Files (x86)\keil\C51\BIN\C51.EXE operation.c BROWSE DEBUG OBJECTEXTEND
 
 line level    source
 
    1          /*-------------------------------------------------------------
-   2             operation.c
-   3             operation in all case
+   2                  operation.c
+   3                  operation in all case
    4          --------------------------------------------------------------*/
    5          
    6          #include "main.h"
@@ -24,123 +24,125 @@ line level    source
   15          /*------- Public variable declarations --------------------------*/
   16          extern bit slave_away_speech_EN;      
   17          extern bit slave_nearby_speech_EN;     
-  18          extern bit position_sensor_EN;      //位置传感器，即倒地抬起传感器总开关，1的时候，检测这两个传感器
-  19          extern bit slave_away;              //模式选择位，1则用模式1,2则用模式2,3则为模式3
-  20          extern bit magnet_CW_EN;               //电磁铁顺时针转动使能，转动一次后复位为0
-  21          extern bit fell_flag;                  //判断主机倒下后，置1
-  22          extern bit raised_flag;             //判断主机被抬起后，置1
-  23          extern tByte sensor_trigger_count;     //传感器触发计数
-  24          extern tByte sensor_1ststage_count; //传感器第一阶段判断低电平的计数
-  25          extern tByte leave_count;              // increment every 2s, reset for every success communication
-  26          extern bit raised_fell_once_flag;         //raised_fell_flag是否曾经标志过，如果标志过则置1.然后主机被恢复倒地或
+  18          extern bit position_sensor_EN;                  //位置传感器，即倒地抬起传感器总开关，1的时候，检测这两个传感器
+  19          extern bit slave_away;                                  //模式选择位，1则用模式1,2则用模式2,3则为模式3
+  20          extern bit magnet_CW_EN;                                        //电磁铁顺时针转动使能，转动一次后复位为0
+  21          extern bit fell_flag;                                           //判断主机倒下后，置1
+  22          extern bit raised_flag;                                 //判断主机被抬起后，置1
+  23          extern tByte sensor_trigger_count;              //传感器触发计数
+  24          extern tByte sensor_1ststage_count;     //传感器第一阶段判断低电平的计数
+  25          extern tByte leave_count;                                       // increment every 2s, reset for every success communication
+  26          extern bit raised_fell_once_flag;                       //raised_fell_flag是否曾经标志过，如果标志过则置1.然后主机被恢复倒地或
              -者恢复抬起时，此标志位复位。
-  27          extern bit raised_fell_flag;              //倒地或者抬起触发后，此标志位置1
+  27          extern bit raised_fell_flag;                                    //倒地或者抬起触发后，此标志位置1
   28          extern bit host_stolen_alarm1_EN;      //判断为被盗报警后的第一段语音使能
   29          extern bit host_stolen_alarm2_EN;      //判断为被盗报警后的第二段语音使能
-  30          extern tByte host_stolen_alarm1_count;    //判断为被盗报警后的第一段语音次数
-  31          extern tByte host_stolen_alarm2_count;    //判断为被盗报警后的第二段语音次数
-  32          extern bit stolen_alarm_flag;             // when host been touch 3 times, this flag 1 before alarm voice present,
+  30          extern tByte host_stolen_alarm1_count;          //判断为被盗报警后的第一段语音次数
+  31          extern tByte host_stolen_alarm2_count;          //判断为被盗报警后的第二段语音次数
+  32          extern bit stolen_alarm_flag;                                   // when host been touch 3 times, this flag 1 before alarm voice present,
              - not to detect sensor for 1st voice alarm.
-  33          extern tWord sensor_3rdstage_time;        //传感器进入第三阶段的时间，
-  34          extern tByte sensor_3rdstage_effcount;    //传感器进入第三阶段后，有效触碰次数的计数
-  35          extern tByte sensor_3rdstage_count;       //传感器进入第三阶段后，低电平的计数
-  36          extern tWord sensor_3rdstage_interval;    //传感器在第三阶段中，每次有效低电平计数之间的时间间隔。在这期间的
+  33          extern tWord sensor_3rdstage_time;                      //传感器进入第三阶段的时间，
+  34          extern tByte sensor_3rdstage_effcount;          //传感器进入第三阶段后，有效触碰次数的计数
+  35          extern tByte sensor_3rdstage_count;                     //传感器进入第三阶段后，低电平的计数
+  36          extern tWord sensor_3rdstage_interval;          //传感器在第三阶段中，每次有效低电平计数之间的时间间隔。在这期间的
              -低电平不认为有效。
-  37          extern tWord sensor_2ndstage_time;     //传感器进入第二阶段后流逝时间的计数
-  38          extern tByte sensor_2ndstage_count;    //传感器进入第二阶段检测时，计算低电平的时间
-  39          extern tByte nearby_away_interval;     //附机离开和靠近时，语音提示和开关锁的时间间隔
-  40          extern bit slave_nearby_EN;         // 作为slave靠近后操作的使能
-  41          extern tByte slave_nearby_operation_count;   // 作为slave靠近后操作的次数
-  42          extern tByte key_rotated_on_flag;         //电动车开启关闭标志位，1表示电动车开启了，0表示电动车关闭了
-  43          extern tWord ADC_check_result;      //作为AD检测值
-  44          extern tByte wire_broken_count;     // 作为断线后的时间检测
-  45          extern bit battery_stolen_EN;       // 作为电池被盗的使能端
-  46          extern tByte battery_stolen_count;  // 作为电池被盗的报警次数
-  47          
-  48          /*-----------------------------------------
-  49             slave_away_operation().c
-  50             
-  51             operation for slave is away
-  52          ------------------------------------------*/
-C51 COMPILER V9.51   OPERATION                                                             04/17/2014 15:30:01 PAGE 2   
+  37          extern tWord sensor_2ndstage_time;              //传感器进入第二阶段后流逝时间的计数
+  38          extern tByte sensor_2ndstage_count;             //传感器进入第二阶段检测时，计算低电平的时间
+  39          extern tByte nearby_away_interval;              //附机离开和靠近时，语音提示和开关锁的时间间隔
+  40          extern bit slave_nearby_EN;                     // 作为slave靠近后操作的使能
+  41          extern tByte slave_nearby_operation_count;      // 作为slave靠近后操作的次数
+  42          extern tByte key_rotated_on_flag;                       //电动车开启关闭标志位，1表示电动车开启了，0表示电动车关闭了
+  43          extern tWord ADC_check_result;          //作为AD检测值
+  44          extern tByte wire_broken_count;         // 作为断线后的时间检测
+  45          extern bit wire_broken_flag;                    // 剪断锁线的标志位
+  46          extern bit battery_stolen_EN;                   // 作为电池被盗的使能端
+  47          extern tByte battery_stolen_count;      // 作为电池被盗的报警次数
+  48          
+  49          /*-----------------------------------------
+  50                  slave_away_operation().c
+  51                  
+  52                  operation for slave is away
+C51 COMPILER V9.51   OPERATION                                                             05/08/2014 09:50:00 PAGE 2   
 
-  53          void slave_away_operation(void)
-  54             {
-  55   1         // turn off the magnet 
-  56   1         magnet_ACW();
-  57   1         
-  58   1         // speech for slave away
-  59   1         slave_away_speech();
-  60   1         
-  61   1         
-  62   1         // enable position sensor(vertical and horizontal) and vibration sensor
-  63   1         position_sensor_EN=1;   
-  64   1         sensor_EN = 1;
-  65   1         // reset relatively sensor count
-  66   1         sensor_trigger_count=0;
-  67   1         sensor_1ststage_count=0;
-  68   1         
-  69   1         // delay time, avoid sensor trigger on.
-  70   1         Delay(20);
-  71   1         }
-  72          
-  73          /*----------------------------------------------------------------------
-  74                slave_nearby_operation()
-  75                operation for slave is nearby
-  76          ----------------------------------------------------------------------*/
-  77          void slave_nearby_operation(void)
-  78             {
-  79   1         // enable position sensor(vertical and horizontal) and vibration sensor
-  80   1         position_sensor_EN = 0; 
-  81   1         sensor_EN = 0;
-  82   1      
-  83   1         // turn on the magnet
-  84   1         magnet_CW();
-  85   1      
-  86   1         // speech for slave nearby
-  87   1         slave_nearby_speech();
-  88   1         // handle with battery status 
-  89   1         verifybattery(ADC_check_result);             
-  90   1         // rotate on speech
-  91   1         key_rotate_on_speech();
-  92   1         nearby_away_interval = 0;
-  93   1         
-  94   1         // reset all the flag in sensor
-  95   1         fell_flag=0;  
-  96   1         raised_flag=0;
-  97   1         sensor_trigger_count = 0;
-  98   1         sensor_1ststage_count = 0;
-  99   1         sensor_2ndstage_count = 0;
- 100   1         sensor_2ndstage_time = 0;
- 101   1         sensor_3rdstage_time = 0;
- 102   1         sensor_3rdstage_interval = 0;
- 103   1         sensor_3rdstage_count = 0;
- 104   1         sensor_3rdstage_effcount = 0;
- 105   1         stolen_alarm_flag = 0;
- 106   1         host_stolen_alarm1_EN = 0;
- 107   1         host_stolen_alarm1_count = 0;
- 108   1         host_stolen_alarm2_EN = 0;
- 109   1         host_stolen_alarm2_count = 0;
- 110   1         
- 111   1         raised_fell_flag = 0;
- 112   1         
- 113   1         // reset the wire broken count
- 114   1         wire_broken_count = 0;
-C51 COMPILER V9.51   OPERATION                                                             04/17/2014 15:30:01 PAGE 3   
+  53          ------------------------------------------*/
+  54          void slave_away_operation(void)
+  55                  {
+  56   1              // turn off the magnet 
+  57   1              magnet_ACW();
+  58   1              
+  59   1              // speech for slave away
+  60   1              slave_away_speech();
+  61   1              
+  62   1              
+  63   1              // enable position sensor(vertical and horizontal) and vibration sensor
+  64   1              position_sensor_EN=1;   
+  65   1              sensor_EN = 1;
+  66   1              // reset relatively sensor count
+  67   1              sensor_trigger_count=0;
+  68   1              sensor_1ststage_count=0;
+  69   1              
+  70   1              // delay time, avoid sensor trigger on.
+  71   1              Delay(20);
+  72   1              }
+  73          
+  74          /*----------------------------------------------------------------------
+  75                          slave_nearby_operation()
+  76                          operation for slave is nearby
+  77          ----------------------------------------------------------------------*/
+  78          void slave_nearby_operation(void)
+  79                  {
+  80   1              // enable position sensor(vertical and horizontal) and vibration sensor
+  81   1              position_sensor_EN = 0; 
+  82   1              sensor_EN = 0;
+  83   1      
+  84   1              // turn on the magnet
+  85   1              magnet_CW();
+  86   1      
+  87   1              // speech for slave nearby
+  88   1              slave_nearby_speech();
+  89   1              // handle with battery status 
+  90   1              verifybattery(ADC_check_result);                                        
+  91   1              // rotate on speech
+  92   1              key_rotate_on_speech();
+  93   1              nearby_away_interval = 0;
+  94   1              
+  95   1              // reset all the flag in sensor
+  96   1              fell_flag=0;  
+  97   1              raised_flag=0;
+  98   1              sensor_trigger_count = 0;
+  99   1              sensor_1ststage_count = 0;
+ 100   1              sensor_2ndstage_count = 0;
+ 101   1              sensor_2ndstage_time = 0;
+ 102   1              sensor_3rdstage_time = 0;
+ 103   1              sensor_3rdstage_interval = 0;
+ 104   1              sensor_3rdstage_count = 0;
+ 105   1              sensor_3rdstage_effcount = 0;
+ 106   1              stolen_alarm_flag = 0;
+ 107   1              host_stolen_alarm1_EN = 0;
+ 108   1              host_stolen_alarm1_count = 0;
+ 109   1              host_stolen_alarm2_EN = 0;
+ 110   1              host_stolen_alarm2_count = 0;
+ 111   1              
+ 112   1              raised_fell_flag = 0;
+ 113   1              
+ 114   1              // reset the wire broken count
+C51 COMPILER V9.51   OPERATION                                                             05/08/2014 09:50:00 PAGE 3   
 
- 115   1         
- 116   1         // reset battery stolen
- 117   1         battery_stolen_EN = 0;
- 118   1         battery_stolen_count = 0;
- 119   1         }
- 120             
- 121          /*---------------------------------------------------
- 122             end of file
- 123          ----------------------------------------------------*/
+ 115   1              wire_broken_count = 0;
+ 116   1              wire_broken_flag = 0;
+ 117   1              
+ 118   1              // reset battery stolen
+ 119   1              battery_stolen_EN = 0;
+ 120   1              battery_stolen_count = 0;
+ 121   1              }
+ 122                  
+ 123          /*---------------------------------------------------
+ 124                  end of file
+ 125          ----------------------------------------------------*/
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     89    ----
+   CODE SIZE        =     91    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

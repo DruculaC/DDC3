@@ -145,6 +145,7 @@ void host_touch_speech(void)
 	SC_Speech(2);  
 	Delay(60);
 	voice_EN = 0;
+	Delay(10);
 	}
 
 /*-----------------------------------------------------

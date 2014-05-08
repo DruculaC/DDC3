@@ -364,6 +364,52 @@ void ComMode_5_Data()//发送倒地编码
 	receiver_EN = 0;
 }
 
+/*-----------------------------------------------------------
+	ComMode_6_Data()
+	
+	发信号给附机，让其语音提示“电动车倒地了”
+------------------------------------------------------------*/
+
+void ComMode_6_Data()//发送倒地编码
+{
+	unsigned char i,n;
+	receiver_EN = 1;
+	transmiter_power = 0;//切换为300M发射
+	transmiter_EN = 0;      //打开无线发射机
+	myTxRxData[0]=CmdHead;
+	myTxRxData[1]=MyAddress;
+	myTxRxData[2]=ComMode_6;
+/*	myTxRxData[3]=0x00;
+	myTxRxData[4]=0x00;
+	myTxRxData[5]=0x00;
+	myTxRxData[6]=0x00;
+*/
+	initsignal3();
+
+	for(i=0;i<3;i++)
+	{
+		for(n=0;n<8;n++)
+		{
+			if((myTxRxData[i]&0x80)==0x80)//为1
+			{
+				P10=0;
+				Delay4(120);//延时4.5ms以上，由于定时器占用问题，只能用这种延时来实现
+			}
+			else//为0的情况
+			{
+				P10=0;
+				Delay4(80);//延时2ms，由于定时器占用问题，只能用这种延时来实现
+			}
+			P10=1;//常态为高电平
+			myTxRxData[i]<<=1;
+			Delay4(50);//延时要大于2ms
+		}
+	}
+	transmiter_EN = 1;
+	transmiter_power = 1;
+	receiver_EN = 0;
+}
+
 /*-----------------------------------------------------------------------------
 	receive_byte()
 	receive a byte program
